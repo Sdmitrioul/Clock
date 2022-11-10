@@ -2,7 +2,7 @@ package ru.skroba.clock;
 
 import java.time.Instant;
 
-public class StaticClock implements Clock {
+public final class StaticClock implements Clock {
     private final Instant time;
     
     public StaticClock(final Instant time) {
