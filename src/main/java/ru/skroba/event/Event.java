@@ -1,11 +1,12 @@
 package ru.skroba.event;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public interface Event {
-    boolean put(Instant instant);
-    List<Instant> getTimes();
-    List<Instant> getFiltered(int time, TimeUnit unit);
+    void put(Instant instant);
+    
+    double getRPM(Instant now, long time, TimeUnit unit);
+    
+    String toString(Instant now, long time, TimeUnit unit);
 }

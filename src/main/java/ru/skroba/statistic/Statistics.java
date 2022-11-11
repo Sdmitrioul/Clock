@@ -1,17 +1,12 @@
 package ru.skroba.statistic;
 
-import ru.skroba.event.NamedEvent;
-
-import java.time.Instant;
-import java.util.List;
-
-public interface Statistics {
+public interface Statistics<T> {
     
     void incEvent(String name);
     
-    List<NamedEvent> getAllEventStatistic();
+    double getAllEventStatistic();
     
-    List<Instant> getEventStatisticByName(String name);
+    double getEventStatisticByName(String name);
     
     void printStatistic();
 }

@@ -1,5 +1,6 @@
 package ru.skroba.event;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,41 +16,29 @@ public final class NamedEvent implements Event {
     }
     
     @Override
-    public boolean put(final Instant instant) {
-        return events.add(instant);
+    public void put(final Instant instant) {
+        events.add(instant);
     }
     
     @Override
-    public List<Instant> getTimes() {
-        return List.copyOf(events);
+    public double getRPM(final Instant now, final long time, final TimeUnit unit) {
+        final Instant fromTime = now.minus(time, unit.toChronoUnit());
+        
+        final int countOfMinutes = (int) Duration.between(fromTime, now)
+                .abs()
+                .toMinutes();
+        
+        return ((double) getFiltered(now, fromTime).size()) / countOfMinutes;
     }
     
     @Override
-    public List<Instant> getFiltered(final int time, final TimeUnit unit) {
-        final Instant borderTime = Instant.now()
-                .minus(time, unit.toChronoUnit());
-        return events.stream()
-                .filter(it -> it.compareTo(borderTime) > 0)
+    public String toString(final Instant now, final long time, final TimeUnit unit) {
+        return "[Name: " + taskName + "; rpm: " + String.format("%.2f]", getRPM(now, time, unit));
+    }
+    
+    private List<Instant> getFiltered(final Instant to, final Instant fromTime) {
+        return this.events.stream()
+                .filter(it -> it.isAfter(fromTime) && it.isBefore(to))
                 .collect(Collectors.toList());
-    }
-    
-    @Override
-    public String toString() {
-        final StringBuilder result = new StringBuilder();
-        
-        result.append("Name: ")
-                .append(taskName)
-                .append(",\n");
-        result.append("Occurrences: [");
-        
-        events.stream()
-                .sorted()
-                .forEach(it -> result.append(it)
-                        .append(", "));
-        
-        result.delete(result.length() - 2, result.length());
-        result.append("].");
-        
-        return result.toString();
     }
 }
