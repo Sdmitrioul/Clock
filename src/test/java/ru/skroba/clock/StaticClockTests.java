@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StaticClockTests {
     @Test
@@ -20,5 +22,14 @@ public class StaticClockTests {
         clock.setTime(min);
         
         assertEquals(min, clock.now());
+    }
+    
+    @Test
+    void exceptionThrows() {
+        final StaticClock clock = new StaticClock(Instant.MAX);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> clock.setTime(null));
+        
+        assertTrue(exception.getMessage()
+                .contains("Instant can't be null!"));
     }
 }
