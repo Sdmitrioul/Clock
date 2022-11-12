@@ -78,11 +78,56 @@ public class EventStatisticsTests {
     
     @Test
     void statisticWithOutdatedEvents() {
-        //TODO
+        final List<String> eventsName = List.of("Test", "Random");
+    
+        eventsName.forEach(statistics::incEvent);
+        clock.setTime(instant.plus(2, ChronoUnit.HOURS));
+    
+        final double result = 0.0;
+    
+        for (String event : eventsName) {
+            assertEquals(result, statistics.getEventStatisticByName(event));
+        }
+    
+        assertEquals(result * 2, statistics.getAllEventStatistic());
+        statistics.printStatistic();
+        final Set<String> printedWaited = eventsName.stream()
+                .map(it -> getEventString(it, result))
+                .collect(Collectors.toSet());
+        assertEquals(printedWaited, Arrays.stream(outputStreamCaptor.toString()
+                        .split("\n"))
+                .collect(Collectors.toSet()));
     }
     
     @Test
     void statisticWithRandomEvents() {
-        //TODO
+        final List<String> eventsName = List.of("Test", "Random");
+    
+        eventsName.forEach(statistics::incEvent);
+        instant = instant.plus(2, ChronoUnit.HOURS);
+        clock.setTime(instant);
+        
+        final int count = 3;
+        for (int i = 0; i < count; i++) {
+            instant = instant.plus(count, ChronoUnit.MINUTES);
+            clock.setTime(instant);
+            eventsName.forEach(statistics::incEvent);
+        }
+        
+        
+        final double result = (double) (count - 1) / 60;
+    
+        for (String event : eventsName) {
+            assertEquals(result, statistics.getEventStatisticByName(event));
+        }
+    
+        assertEquals(result * 2, statistics.getAllEventStatistic());
+        statistics.printStatistic();
+        final Set<String> printedWaited = eventsName.stream()
+                .map(it -> getEventString(it, result))
+                .collect(Collectors.toSet());
+        assertEquals(printedWaited, Arrays.stream(outputStreamCaptor.toString()
+                        .split("\n"))
+                .collect(Collectors.toSet()));
     }
 }
