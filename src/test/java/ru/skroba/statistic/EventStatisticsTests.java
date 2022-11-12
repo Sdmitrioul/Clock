@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.skroba.Util.getEventString;
 
 public class EventStatisticsTests {
-    private final ByteArrayOutputStream outputtreamCaptor = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     private Instant instant;
     private StaticClock clock;
     private Statistics<Event> statistics;
