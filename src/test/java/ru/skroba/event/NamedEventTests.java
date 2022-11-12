@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.skroba.Util.getEventString;
 
 public class NamedEventTests {
     @Test
@@ -38,7 +39,7 @@ public class NamedEventTests {
     
     @Test
     void testToString() {
-        assertEquals("[Name: Test; rpm: 1,00]",
+        assertEquals(getEventString("Test", 1.0),
                 getEventWithData().toString(Instant.parse("2007-12-03T10:15:30.01Z"), 1, TimeUnit.MINUTES));
     }
 }
