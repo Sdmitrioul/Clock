@@ -18,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.skroba.Util.getEventString;
 
 public class EventStatisticsTests {
-    private final PrintStream standardOut = System.out;
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream outputtreamCaptor = new ByteArrayOutputStream();
     private Instant instant;
     private StaticClock clock;
     private Statistics<Event> statistics;
@@ -79,16 +78,16 @@ public class EventStatisticsTests {
     @Test
     void statisticWithOutdatedEvents() {
         final List<String> eventsName = List.of("Test", "Random");
-    
+        
         eventsName.forEach(statistics::incEvent);
         clock.setTime(instant.plus(2, ChronoUnit.HOURS));
-    
+        
         final double result = 0.0;
-    
+        
         for (String event : eventsName) {
             assertEquals(result, statistics.getEventStatisticByName(event));
         }
-    
+        
         assertEquals(result * 2, statistics.getAllEventStatistic());
         statistics.printStatistic();
         final Set<String> printedWaited = eventsName.stream()
@@ -102,7 +101,7 @@ public class EventStatisticsTests {
     @Test
     void statisticWithRandomEvents() {
         final List<String> eventsName = List.of("Test", "Random");
-    
+        
         eventsName.forEach(statistics::incEvent);
         instant = instant.plus(2, ChronoUnit.HOURS);
         clock.setTime(instant);
@@ -114,13 +113,12 @@ public class EventStatisticsTests {
             eventsName.forEach(statistics::incEvent);
         }
         
-        
         final double result = (double) (count - 1) / 60;
-    
+        
         for (String event : eventsName) {
             assertEquals(result, statistics.getEventStatisticByName(event));
         }
-    
+        
         assertEquals(result * 2, statistics.getAllEventStatistic());
         statistics.printStatistic();
         final Set<String> printedWaited = eventsName.stream()
